@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <style type="text/css">
+            {% block css %}{% endblock %}
+        </style>
+    </head>
+    <body>
+        <div class="navigation">
+            Categories: <a href="{% url 'category_list' %}">List</a> |
+                        <a href="{% url 'category_add' %}">Add</a>
+            <br />
+            Entries: <a href="{% url 'entry_list' %}">List</a> |
+                     <a href="{% url 'entry_add' %}">Add</a>
+        </div>
+        <hr>
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

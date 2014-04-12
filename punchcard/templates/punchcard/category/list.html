@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load nest %}
+
+{% block title %}Category List{% endblock %}
+
+{% block content %}
+    <p><a href="{% url 'category_add' %}">Add Category</a></p>
+    {% if object_list %}
+
+        {% neststart object_list %}
+            <ul>
+                {% for category in object_list %}
+
+                    {% if category.active %}
+                        <li><a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+                            {% comment %}<small><a href="{% url 'category_edit' pk=category.id %}">[Edit]</a> [Delete]</small>{% endcomment %}
+                            {% if category.children %}
+                                {% nest category.children.all %}
+                            {% endif %}
+                        </li>
+                    {% endif %}
+
+                    {% if nestlevel == 0 %}
+                        <br />
+                    {% endif %}
+
+                {% endfor %}
+            </ul>
+        {% nestend %}
+
+    {% else %}
+        <p>No categories! <a href="{% url 'category_add' %}">Add Category</a></p>
+    {% endif %}
+{% endblock %}

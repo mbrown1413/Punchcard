@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Entry List{% endblock %}
+
+{% block css %}
+    table, table td, table th {
+        border: 1px solid black;
+    }
+    td, th {
+        padding: 5px;
+    }
+{% endblock %}
+
+{% block content %}
+    <p><a href="{% url 'entry_add' %}">Add Entry</a></p>
+    {% if object_list %}
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Hours</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+            {% for entry in object_list %}
+            <tr>
+                <td>{{ entry.date }}</td>
+                <td>{{ entry.category.name }}</td>
+                <td>{{ entry.hours }}</td>
+                <td><pre>{{ entry.description }}</pre></td>
+                <td><a href="{% url 'entry_edit' pk=entry.id %}">[Edit]</a> | [Delete]</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No Entries. What a shame!</p>
+    {% endif %}
+{% endblock %}

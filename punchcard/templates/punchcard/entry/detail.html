@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Entry Details{% endblock %}
+
+{% block content %}
+    <h2>Entry: {{ entry.name }}</h2>
+    <a href="{% url 'entry_edit' pk=entry.id %}">[edit]</a><br />
+    Category: {{ entry.category }}<br />
+    Date: {{ entry.date }}<br />
+    Hours: {{ entry.hours }}<br />
+    Description:<br />
+        <pre>{{ entry.description }}</pre>
+{% endblock %}

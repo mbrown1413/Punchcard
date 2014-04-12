@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Category Details{% endblock %}
+
+{% block content %}
+    <h2>Category: {{ category.name }}</h2>
+    <a href="{% url 'category_edit' pk=category.id %}">[edit]</a><br />
+    {% if category.active %}
+        <span style="color: green;">Active</span><br />
+    {% else %}
+        <span style="color: red;">Inactive</span><br />
+    {% endif %}
+    {% if category.parent.name %}
+        Parent: {{ category.parent.name }}<br />
+    {% else %}
+        Top level category<br />
+    {% endif %}
+    <pre>{{ category.description }}</pre>
+{% endblock %}
