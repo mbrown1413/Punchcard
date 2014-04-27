@@ -9,6 +9,7 @@ from punchcard import models, forms
 class EntryListView(ListView):
     model = models.Entry
     template_name = 'punchcard/entry/list.html'
+    queryset = models.Entry.objects.all().order_by('-date', 'category')
 
 class EntryAddView(CreateView):
     model = models.Entry
