@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 
 
 class Entry(models.Model):
+    '''A log of work accomplished.'''
     category = models.ForeignKey('Category')
     date = models.DateField()
     hours = models.FloatField()
@@ -18,6 +19,14 @@ class Entry(models.Model):
 
 
 class Category(models.Model):
+    '''A category of entries.
+
+    Could be a project or a hobby the user wants to keep track of. Categories
+    can be nested inside other categories using the parent field, which is NULL
+    for top level categories. If a category has active=False, it will not show
+    up on the category listing and new entries cannot use it, but its related
+    entries are still stored.
+    '''
     name = models.CharField(max_length=255)
     active = models.BooleanField(default=True)
     parent = models.ForeignKey('Category', related_name='children', null=True,
@@ -34,13 +43,14 @@ class Category(models.Model):
             super(CategoryTreeLoop).__init__(self, ERROR_STR, *args, **kwargs)
 
     def __unicode__(self):
-        try:
-            return self.full_path
-        except Exception as e:
-            import pdb; pdb.set_trace()
+        return self.full_path
 
     @property
     def full_path(self):
+        '''
+        A string representatin of the path of this category, starting at a
+        top level category and walking the tree until this category is reached.
+        '''
         #TODO: This is very inefficient right now.
         #      In the future I want to store full_path in the database and only
         #      update it when needed.
@@ -50,8 +60,8 @@ class Category(models.Model):
 
     def _get_ancestors(self):
         '''
-        Returns a list starting from the top level category and ending at this
-        category.
+        Returns a list of categories starting from the top level category and
+        ending at this category.
         '''
         cat_list = [self]
         cat_id_list = [self.id]
@@ -66,16 +76,15 @@ class Category(models.Model):
 
     def get_valid_parents(self):
         """
-        Returns a set of parents that would not produce a loop in the category
-        tree.
+        Returns a set of possible parents that would not produce a loop in the
+        category tree.
         """
         #TODO: This is very inefficient right now
         #      In the future I want to store a full path in the database, and
         #      get the valid parents list in a single query without
         #      postprocessing
-        queryset = Category.objects.exclude(id__exact=self.id).filter(active=True)
 
-        categories = set(queryset)
+        # Blacklist all descendents of this category
         blacklisted = set([self])
         blacklist_size = 0
         while blacklist_size != len(blacklisted):
@@ -83,7 +92,11 @@ class Category(models.Model):
             for category in blacklisted:
                 blacklisted = blacklisted.union(category.children.filter(active=True))
                 blacklist_grew = True
-        return categories.difference(blacklisted)
+
+        # Subtract blacklisted categories from all possible ones
+        queryset = Category.objects.exclude(id__exact=self.id).filter(active=True)
+        categories = set(queryset)
+        return set(queryset).difference(blacklisted)
 
     def get_absolute_url(self):
         return reverse('category_detail', args=[str(self.id)])

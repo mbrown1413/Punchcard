@@ -6,6 +6,8 @@ from django.views.generic.edit import UpdateView
 from punchcard import models, forms
 
 
+#################### Entries ####################
+
 class EntryListView(ListView):
     model = models.Entry
     template_name = 'punchcard/entry/list.html'
@@ -28,9 +30,12 @@ class EntryEditView(UpdateView):
 #TODO: Delete Entry
 
 
+#################### Categories ####################
+
 class CategoryListView(ListView):
     model = models.Category
     template_name = 'punchcard/category/list.html'
+    # Toplevel categories are queried, the template recurses to children
     queryset = models.Category.objects.filter(parent=None)
 
 class CategoryAddView(CreateView):
