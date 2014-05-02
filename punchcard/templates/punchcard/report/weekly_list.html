@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block css %}
+    table, table td, table th {
+        border: 1px solid black;
+    }
+    td, th {
+        padding: 5px;
+    }
+{% endblock %}
+
+{% block title %}Weekly Reports{% endblock %}
+
+{% block content %}
+
+    {% for week in weeks %}
+        Week of {{ week.first_day.date }}
+        <table>
+            <tr>
+                {% for day in week.days %}
+                    {% if day.date == today %}
+                        <th style="color: green;">
+                    {% elif day.date > today %}
+                        <th style="color: gray;">
+                    {% else %}
+                        <th>
+                    {% endif %}
+                        {{ day.weekday_name }}
+                        <br>
+                        {{ day.date }}
+                    </th>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for day in week.days %}
+                    <td>
+                        <ul>
+                            {% for category, hours in day.category_hours.iteritems %}
+                                <li>{{ hours }} hours : {{ category.full_path }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                {% endfor %}
+            </tr>
+        </table>
+        <br>
+        <hr>
+        <br>
+    {% endfor %}
+
+{% endblock %}

@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 
 from punchcard.views import EntryListView, EntryAddView, EntryDetailView, EntryEditView
 from punchcard.views import CategoryListView, CategoryAddView, CategoryDetailView, CategoryEditView
+from punchcard.views import ReportWeeklyListView
 
 urlpatterns = patterns('',
 
@@ -16,6 +17,9 @@ urlpatterns = patterns('',
     url(r'^categories/add$', CategoryAddView.as_view(), name='category_add'),
     url(r'^categories/(?P<pk>\d+)/$', CategoryDetailView.as_view(), name='category_detail'),
     url(r'^categories/(?P<pk>\d+)/edit/$', CategoryEditView.as_view(), name='category_edit'),
+
+    # Reports
+    url(r'^reports/weekly/', ReportWeeklyListView.as_view(), name='report_weekly_list'),
 
     url(r'^$', EntryListView.as_view()),
 
