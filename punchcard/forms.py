@@ -2,6 +2,7 @@ import re
 from datetime import date
 
 from django import forms
+from django.forms import widgets
 
 from punchcard.models import Category, Entry
 from punchcard import bootstrapforms
@@ -23,6 +24,7 @@ class EntryForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'category': SortedSelectWidget(),
+            'hours': widgets.NumberInput(attrs={"step": 0.5})
         }
 
     def __init__(self, *args, **kwargs):
