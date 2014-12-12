@@ -2,13 +2,14 @@ from itertools import imap
 
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.core.validators import MinValueValidator
 
 
 class Entry(models.Model):
     '''A log of work accomplished.'''
     category = models.ForeignKey('Category')
     date = models.DateField()
-    hours = models.FloatField()
+    hours = models.FloatField(validators=[MinValueValidator(0)])
     description = models.TextField()
 
     class Meta:
