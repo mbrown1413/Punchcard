@@ -1,20 +1,8 @@
 Punchcard: A project time tracker
 
-A django app that lets you track hours worked on projects. Work units are input
+A Django app that lets you track hours worked on projects. Work units are input
 as entries, and each entry belongs to an entry category. Entry categories can
 be subcategories of other entry categories, nested as deep as you want.
-
-
-Installation
-============
-
-TODO
-
-
-App Settings
-============
-
-None so far.
 
 
 Status
