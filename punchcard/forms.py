@@ -5,7 +5,6 @@ from django import forms
 from django.forms import widgets
 
 from punchcard.models import Category, Entry
-from punchcard import bootstrapforms
 
 category_name_re = re.compile(r'^[A-Za-z0-9_\- ]+$')
 
