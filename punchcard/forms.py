@@ -52,7 +52,7 @@ class CategoryForm(forms.ModelForm):
         if instance:
             valid_parents = instance.get_valid_parents()
             choices = map(lambda x: (x.id, x.full_path), valid_parents)
-            self.fields['parent'].choices = choices
+            self.fields['parent'].choices = [(u'', u'---------')] + choices
 
     def clean_name(self):
         value = self.cleaned_data['name']
