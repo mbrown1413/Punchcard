@@ -42,6 +42,11 @@ class CategoryListView(ListView):
     # Toplevel categories are queried, the template recurses to children
     queryset = models.Category.objects.filter(parent=None)
 
+    def get_context_data(self, **kwargs):
+        context = super(CategoryListView, self).get_context_data(**kwargs)
+        context['show_inactive'] = 'show_inactive' in self.request.GET
+        return context
+
 class CategoryAddView(CreateView):
     model = models.Category
     form_class = forms.CategoryAddForm
